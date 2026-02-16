@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya AI - System Architecture Flowchart</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .diagram-container {
+            width: 100%;
+            max-width: 1600px;
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #000;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .box {
+            fill: #E8F4F8;
+            stroke: #2C5F7C;
+            stroke-width: 2;
+        }
+
+        .box-primary {
+            fill: #4A90E2;
+            stroke: #2C5F7C;
+            stroke-width: 2;
+        }
+
+        .box-secondary {
+            fill: #D4E8F5;
+            stroke: #2C5F7C;
+            stroke-width: 2;
+        }
+
+        .box-ai {
+            fill: #FFE8D1;
+            stroke: #D68910;
+            stroke-width: 2;
+        }
+
+        .box-data {
+            fill: #E8D4F5;
+            stroke: #7C2C9F;
+            stroke-width: 2;
+        }
+
+        .box-infra {
+            fill: #FFD4D4;
+            stroke: #9F2C2C;
+            stroke-width: 2;
+        }
+
+        .diamond {
+            fill: #FFE8D1;
+            stroke: #D68910;
+            stroke-width: 2;
+        }
+
+        .text {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            fill: #000;
+            text-anchor: middle;
+        }
+
+        .text-small {
+            font-size: 9px;
+            fill: #333;
+        }
+
+        .title-text {
+            font-size: 12px;
+            font-weight: bold;
+            fill: #000;
+        }
+
+        .arrow {
+            stroke: #333;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-bi {
+            stroke: #333;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+            marker-start: url(#arrowhead-start);
+        }
+
+        .label {
+            font-size: 10px;
+            fill: #555;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .diagram-container {
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram-container">
+        <h1>VIDYA AI - SYSTEM ARCHITECTURE DIAGRAM</h1>
+        
+        <svg viewBox="0 0 1400 1800" xmlns="http://www.w3.org/2000/svg">
+            <!-- Define arrow markers -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#333" />
+                </marker>
+                <marker id="arrowhead-start" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto">
+                    <polygon points="10 0, 0 3, 10 6" fill="#333" />
+                </marker>
+            </defs>
+
+            <!-- LAYER 1: USER/CLIENT DEVICES -->
+            <text x="700" y="30" class="title-text" style="font-size: 14px; text-decoration: underline;">USER/CLIENT LAYER</text>
+            
+            <!-- Student Mobile App -->
+            <rect x="100" y="50" width="200" height="80" class="box-primary" rx="5"/>
+            <text x="200" y="75" class="title-text">Student Mobile App</text>
+            <text x="200" y="92" class="text-small">(Android - React Native)</text>
+            <text x="200" y="106" class="text-small">• Voice Interface</text>
+            <text x="200" y="118" class="text-small">• Offline Support</text>
+
+            <!-- Teacher Portal -->
+            <rect x="350" y="50" width="200" height="80" class="box-primary" rx="5"/>
+            <text x="450" y="75" class="title-text">Teacher Portal</text>
+            <text x="450" y="92" class="text-small">(Web - React.js)</text>
+            <text x="450" y="106" class="text-small">• Progress Tracking</text>
+            <text x="450" y="118" class="text-small">• Analytics Dashboard</text>
+
+            <!-- Parent App -->
+            <rect x="600" y="50" width="200" height="80" class="box-primary" rx="5"/>
+            <text x="700" y="75" class="title-text">Parent App</text>
+            <text x="700" y="92" class="text-small">(Mobile/Web)</text>
+            <text x="700" y="106" class="text-small">• Child Monitoring</text>
+            <text x="700" y="118" class="text-small">• Reports</text>
+
+            <!-- Local Storage -->
+            <rect x="850" y="50" width="200" height="80" class="box-secondary" rx="5"/>
+            <text x="950" y="75" class="title-text">Local Storage</text>
+            <text x="950" y="92" class="text-small">(SQLite)</text>
+            <text x="950" y="106" class="text-small">• Cached Content</text>
+            <text x="950" y="118" class="text-small">• Offline Data</text>
+
+            <!-- Arrows from devices to API Gateway -->
+            <line x1="200" y1="130" x2="200" y2="190" class="arrow"/>
+            <line x1="450" y1="130" x2="450" y2="190" class="arrow"/>
+            <line x1="700" y1="130" x2="700" y2="190" class="arrow"/>
+            
+            <!-- Sync arrow from local storage -->
+            <path d="M 950 130 L 950 160 L 700 160 L 700 190" class="arrow"/>
+            <text x="820" y="155" class="label">Sync when online</text>
+
+            <!-- LAYER 2: API GATEWAY -->
+            <text x="700" y="210" class="title-text" style="font-size: 14px; text-decoration: underline;">API GATEWAY LAYER</text>
+
+            <rect x="400" y="220" width="600" height="70" class="box" rx="5"/>
+            <text x="700" y="245" class="title-text">API Gateway / Load Balancer</text>
+            <text x="700" y="262" class="text-small">(Kong / AWS API Gateway)</text>
+            <text x="700" y="276" class="text-small">Authentication (JWT) | Rate Limiting | Request Routing</text>
+
+            <!-- Arrow from API Gateway to Backend Services -->
+            <line x1="700" y1="290" x2="700" y2="340" class="arrow"/>
+
+            <!-- LAYER 3: BACKEND MICROSERVICES -->
+            <text x="700" y="360" class="title-text" style="font-size: 14px; text-decoration: underline;">BACKEND MICROSERVICES LAYER</text>
+
+            <!-- User Service -->
+            <rect x="80" y="380" width="180" height="90" class="box-secondary" rx="5"/>
+            <text x="170" y="405" class="title-text">User Service</text>
+            <text x="170" y="420" class="text-small">(Node.js + Express)</text>
+            <text x="170" y="434" class="text-small">• Authentication</text>
+            <text x="170" y="446" class="text-small">• User Management</text>
+            <text x="170" y="458" class="text-small">• Roles & Permissions</text>
+
+            <!-- Content Service -->
+            <rect x="280" y="380" width="180" height="90" class="box-secondary" rx="5"/>
+            <text x="370" y="405" class="title-text">Content Service</text>
+            <text x="370" y="420" class="text-small">(Python FastAPI)</text>
+            <text x="370" y="434" class="text-small">• NCERT Content</text>
+            <text x="370" y="446" class="text-small">• Multilingual</text>
+            <text x="370" y="458" class="text-small">• Content Delivery</text>
+
+            <!-- AI Service -->
+            <rect x="480" y="380" width="180" height="90" class="box-ai" rx="5"/>
+            <text x="570" y="405" class="title-text">AI/ML Service</text>
+            <text x="570" y="420" class="text-small">(Python FastAPI)</text>
+            <text x="570" y="434" class="text-small">• NLP Processing</text>
+            <text x="570" y="446" class="text-small">• Speech (ASR/TTS)</text>
+            <text x="570" y="458" class="text-small">• AI Tutor</text>
+
+            <!-- Assessment Service -->
+            <rect x="680" y="380" width="180" height="90" class="box-secondary" rx="5"/>
+            <text x="770" y="405" class="title-text">Assessment Service</text>
+            <text x="770" y="420" class="text-small">(Python FastAPI)</text>
+            <text x="770" y="434" class="text-small">• Quiz Generation</text>
+            <text x="770" y="446" class="text-small">• Auto-Grading</text>
+            <text x="770" y="458" class="text-small">• Progress Tracking</text>
+
+            <!-- Analytics Service -->
+            <rect x="880" y="380" width="180" height="90" class="box-secondary" rx="5"/>
+            <text x="970" y="405" class="title-text">Analytics Service</text>
+            <text x="970" y="420" class="text-small">(Python + Spark)</text>
+            <text x="970" y="434" class="text-small">• Learning Analytics</text>
+            <text x="970" y="446" class="text-small">• Insights</text>
+            <text x="970" y="458" class="text-small">• Reports</text>
+
+            <!-- Sync Service -->
+            <rect x="1080" y="380" width="180" height="90" class="box-secondary" rx="5"/>
+            <text x="1170" y="405" class="title-text">Sync Service</text>
+            <text x="1170" y="420" class="text-small">(Node.js)</text>
+            <text x="1170" y="434" class="text-small">• Offline Sync</text>
+            <text x="1170" y="446" class="text-small">• Conflict Resolution</text>
+            <text x="1170" y="458" class="text-small">• Data Consistency</text>
+
+            <!-- Arrows from Gateway to Services -->
+            <line x1="400" y1="255" x2="170" y2="380" class="arrow"/>
+            <line x1="500" y1="255" x2="370" y2="380" class="arrow"/>
+            <line x1="650" y1="255" x2="570" y2="380" class="arrow"/>
+            <line x1="750" y1="255" x2="770" y2="380" class="arrow"/>
+            <line x1="850" y1="255" x2="970" y2="380" class="arrow"/>
+            <line x1="950" y1="255" x2="1170" y2="380" class="arrow"/>
+
+            <!-- LAYER 4: AI/ML PROCESSING ENGINE -->
+            <text x="700" y="510" class="title-text" style="font-size: 14px; text-decoration: underline;">AI/ML PROCESSING ENGINE</text>
+
+            <!-- Arrow from AI Service to AI Engine -->
+            <line x1="570" y1="470" x2="570" y2="530" class="arrow"/>
+
+            <!-- Multilingual NLP -->
+            <rect x="120" y="530" width="190" height="100" class="box-ai" rx="5"/>
+            <text x="215" y="555" class="title-text">Multilingual NLP</text>
+            <text x="215" y="572" class="text-small">• IndicBERT</text>
+            <text x="215" y="586" class="text-small">• mBERT</text>
+            <text x="215" y="600" class="text-small">• Language Detection</text>
+            <text x="215" y="614" class="text-small">• Intent Classification</text>
+
+            <!-- Speech Processing -->
+            <rect x="330" y="530" width="190" height="100" class="box-ai" rx="5"/>
+            <text x="425" y="555" class="title-text">Speech Processing</text>
+            <text x="425" y="572" class="text-small">• Whisper (ASR)</text>
+            <text x="425" y="586" class="text-small">• IndicWav2Vec</text>
+            <text x="425" y="600" class="text-small">• TTS (Google/Azure)</text>
+            <text x="425" y="614" class="text-small">• 15+ Languages</text>
+
+            <!-- AI Tutor Engine -->
+            <rect x="540" y="530" width="190" height="100" class="box-ai" rx="5"/>
+            <text x="635" y="555" class="title-text">AI Tutor Engine</text>
+            <text x="635" y="572" class="text-small">• Question Answering</text>
+            <text x="635" y="586" class="text-small">• Doubt Resolution</text>
+            <text x="635" y="600" class="text-small">• Explanation Gen</text>
+            <text x="635" y="614" class="text-small">• RAG Pipeline</text>
+
+            <!-- Recommendation Engine -->
+            <rect x="750" y="530" width="190" height="100" class="box-ai" rx="5"/>
+            <text x="845" y="555" class="title-text">Recommendation</text>
+            <text x="845" y="572" class="text-small">• Collaborative Filter</text>
+            <text x="845" y="586" class="text-small">• Knowledge Tracing</text>
+            <text x="845" y="600" class="text-small">• Adaptive Learning</text>
+            <text x="845" y="614" class="text-small">• LSTM-based</text>
+
+            <!-- On-Device Models -->
+            <rect x="960" y="530" width="190" height="100" class="box-ai" rx="5"/>
+            <text x="1055" y="555" class="title-text">On-Device Models</text>
+            <text x="1055" y="572" class="text-small">• TensorFlow Lite</text>
+            <text x="1055" y="586" class="text-small">• Quantized (500MB)</text>
+            <text x="1055" y="600" class="text-small">• Offline AI</text>
+            <text x="1055" y="614" class="text-small">• Low-end devices</text>
+
+            <!-- Arrows to AI Components -->
+            <line x1="570" y1="530" x2="215" y2="530" class="arrow"/>
+            <line x1="570" y1="530" x2="425" y2="530" class="arrow"/>
+            <line x1="570" y1="530" x2="635" y2="530" class="arrow"/>
+            <line x1="570" y1="530" x2="845" y2="530" class="arrow"/>
+            <line x1="570" y1="530" x2="1055" y2="530" class="arrow"/>
+
+            <!-- LAYER 5: DATA STORAGE LAYER -->
+            <text x="700" y="670" class="title-text" style="font-size: 14px; text-decoration: underline;">DATA STORAGE & CACHE LAYER</text>
+
+            <!-- Arrows from services to data layer -->
+            <line x1="215" y1="630" x2="215" y2="690" class="arrow"/>
+            <line x1="425" y1="630" x2="425" y2="690" class="arrow"/>
+            <line x1="635" y1="630" x2="635" y2="690" class="arrow"/>
+            <line x1="845" y1="630" x2="845" y2="690" class="arrow"/>
+
+            <!-- PostgreSQL -->
+            <rect x="100" y="690" width="200" height="90" class="box-data" rx="5"/>
+            <text x="200" y="715" class="title-text">PostgreSQL</text>
+            <text x="200" y="732" class="text-small">(Relational DB)</text>
+            <text x="200" y="746" class="text-small">• Users & Auth</text>
+            <text x="200" y="758" class="text-small">• Progress Data</text>
+            <text x="200" y="770" class="text-small">• Structured Data</text>
+
+            <!-- MongoDB -->
+            <rect x="320" y="690" width="200" height="90" class="box-data" rx="5"/>
+            <text x="420" y="715" class="title-text">MongoDB</text>
+            <text x="420" y="732" class="text-small">(Document Store)</text>
+            <text x="420" y="746" class="text-small">• Content (Multilang)</text>
+            <text x="420" y="758" class="text-small">• Conversations</text>
+            <text x="420" y="770" class="text-small">• Logs</text>
+
+            <!-- Redis Cache -->
+            <rect x="540" y="690" width="200" height="90" class="box-data" rx="5"/>
+            <text x="640" y="715" class="title-text">Redis</text>
+            <text x="640" y="732" class="text-small">(In-Memory Cache)</text>
+            <text x="640" y="746" class="text-small">• Session Cache</text>
+            <text x="640" y="758" class="text-small">• Frequently Used</text>
+            <text x="640" y="770" class="text-small">• Real-time Data</text>
+
+            <!-- Elasticsearch -->
+            <rect x="760" y="690" width="200" height="90" class="box-data" rx="5"/>
+            <text x="860" y="715" class="title-text">Elasticsearch</text>
+            <text x="860" y="732" class="text-small">(Search Engine)</text>
+            <text x="860" y="746" class="text-small">• Full-text Search</text>
+            <text x="860" y="758" class="text-small">• Analytics</text>
+            <text x="860" y="770" class="text-small">• Log Aggregation</text>
+
+            <!-- S3/Blob Storage -->
+            <rect x="980" y="690" width="200" height="90" class="box-data" rx="5"/>
+            <text x="1080" y="715" class="title-text">AWS S3 / Azure Blob</text>
+            <text x="1080" y="732" class="text-small">(Object Storage)</text>
+            <text x="1080" y="746" class="text-small">• Media (Images/Audio)</text>
+            <text x="1080" y="758" class="text-small">• AI Model Weights</text>
+            <text x="1080" y="770" class="text-small">• Backups</text>
+
+            <!-- Arrows to databases -->
+            <line x1="170" y1="470" x2="200" y2="690" class="arrow"/>
+            <line x1="370" y1="470" x2="420" y2="690" class="arrow"/>
+            <line x1="770" y1="470" x2="640" y2="690" class="arrow"/>
+            <line x1="970" y1="470" x2="860" y2="690" class="arrow"/>
+            <path d="M 425 630 L 425 665 L 1080 665 L 1080 690" class="arrow"/>
+
+            <!-- LAYER 6: INFRASTRUCTURE -->
+            <text x="700" y="820" class="title-text" style="font-size: 14px; text-decoration: underline;">INFRASTRUCTURE & DEPLOYMENT LAYER</text>
+
+            <!-- Arrow from data to infrastructure -->
+            <line x1="640" y1="780" x2="640" y2="840" class="arrow"/>
+
+            <!-- Kubernetes -->
+            <rect x="120" y="840" width="220" height="90" class="box-infra" rx="5"/>
+            <text x="230" y="865" class="title-text">Kubernetes Cluster</text>
+            <text x="230" y="882" class="text-small">(Container Orchestration)</text>
+            <text x="230" y="896" class="text-small">• Auto-scaling</text>
+            <text x="230" y="908" class="text-small">• Service Discovery</text>
+            <text x="230" y="920" class="text-small">• Load Balancing</text>
+
+            <!-- CDN -->
+            <rect x="360" y="840" width="220" height="90" class="box-infra" rx="5"/>
+            <text x="470" y="865" class="title-text">CDN & Edge Network</text>
+            <text x="470" y="882" class="text-small">(CloudFront/Cloudflare)</text>
+            <text x="470" y="896" class="text-small">• Content Delivery</text>
+            <text x="470" y="908" class="text-small">• Regional Caching</text>
+            <text x="470" y="920" class="text-small">• Low Latency</text>
+
+            <!-- Monitoring -->
+            <rect x="600" y="840" width="220" height="90" class="box-infra" rx="5"/>
+            <text x="710" y="865" class="title-text">Monitoring & Logging</text>
+            <text x="710" y="882" class="text-small">(Prometheus + Grafana)</text>
+            <text x="710" y="896" class="text-small">• Real-time Metrics</text>
+            <text x="710" y="908" class="text-small">• Error Tracking (Sentry)</text>
+            <text x="710" y="920" class="text-small">• Alerting</text>
+
+            <!-- CI/CD -->
+            <rect x="840" y="840" width="220" height="90" class="box-infra" rx="5"/>
+            <text x="950" y="865" class="title-text">CI/CD Pipeline</text>
+            <text x="950" y="882" class="text-small">(GitHub Actions)</text>
+            <text x="950" y="896" class="text-small">• Automated Testing</text>
+            <text x="950" y="908" class="text-small">• Build & Deploy</text>
+            <text x="950" y="920" class="text-small">• Version Control</text>
+
+            <!-- Arrows to infrastructure -->
+            <line x1="640" y1="840" x2="230" y2="840" class="arrow"/>
+            <line x1="640" y1="840" x2="470" y2="840" class="arrow"/>
+            <line x1="640" y1="840" x2="710" y2="840" class="arrow"/>
+            <line x1="640" y1="840" x2="950" y2="840" class="arrow"/>
+
+            <!-- LAYER 7: CLOUD PLATFORM -->
+            <text x="700" y="970" class="title-text" style="font-size: 14px; text-decoration: underline;">CLOUD PLATFORM</text>
+
+            <!-- Arrow from infrastructure to cloud -->
+            <line x1="640" y1="930" x2="640" y2="990" class="arrow"/>
+
+            <rect x="400" y="990" width="480" height="70" class="box-infra" rx="5"/>
+            <text x="640" y="1015" class="title-text">Cloud Provider (AWS / Google Cloud / Azure)</text>
+            <text x="640" y="1032" class="text-small">Virtual Machines | Container Services | Managed Databases | Object Storage</text>
+            <text x="640" y="1046" class="text-small">Regional Deployment: Mumbai, Delhi, Bangalore | Multi-AZ for High Availability</text>
+
+            <!-- DATA FLOW SECTION -->
+            <text x="700" y="1120" class="title-text" style="font-size: 14px; text-decoration: underline;">KEY DATA FLOWS</text>
+
+            <!-- Flow 1: Student Query -->
+            <rect x="50" y="1140" width="420" height="180" class="box-secondary" rx="5"/>
+            <text x="260" y="1160" class="title-text" style="text-decoration: underline;">FLOW 1: Student Voice Query</text>
+            
+            <text x="60" y="1185" class="text-small" text-anchor="start">1. Student speaks in Hindi: "Photosynthesis kya hai?"</text>
+            <text x="60" y="1200" class="text-small" text-anchor="start">2. Mobile App → Voice recorded</text>
+            <text x="60" y="1215" class="text-small" text-anchor="start">3. API Gateway → AI Service</text>
+            <text x="60" y="1230" class="text-small" text-anchor="start">4. Speech-to-Text (Whisper) → "Photosynthesis kya hai?"</text>
+            <text x="60" y="1245" class="text-small" text-anchor="start">5. Language Detection → Hindi</text>
+            <text x="60" y="1260" class="text-small" text-anchor="start">6. IndicBERT → Intent: "definition query" Topic: "Science"</text>
+            <text x="60" y="1275" class="text-small" text-anchor="start">7. Content Service → Fetch from MongoDB</text>
+            <text x="60" y="1290" class="text-small" text-anchor="start">8. AI Tutor → Generate explanation in Hindi</text>
+            <text x="60" y="1305" class="text-small" text-anchor="start">9. TTS → Convert to speech → Return to student</text>
+
+            <!-- Flow 2: Offline Learning -->
+            <rect x="490" y="1140" width="420" height="180" class="box-secondary" rx="5"/>
+            <text x="700" y="1160" class="title-text" style="text-decoration: underline;">FLOW 2: Offline Learning</text>
+            
+            <text x="500" y="1185" class="text-small" text-anchor="start">1. Student opens app (No Internet)</text>
+            <text x="500" y="1200" class="text-small" text-anchor="start">2. App checks local SQLite database</text>
+            <text x="500" y="1215" class="text-small" text-anchor="start">3. Loads downloaded Chapter 3 content (45 MB)</text>
+            <text x="500" y="1230" class="text-small" text-anchor="start">4. Student studies, asks doubt via voice</text>
+            <text x="500" y="1245" class="text-small" text-anchor="start">5. On-device AI model (TF Lite 500MB) processes</text>
+            <text x="500" y="1260" class="text-small" text-anchor="start">6. Searches local content, generates answer</text>
+            <text x="500" y="1275" class="text-small" text-anchor="start">7. Takes quiz → Auto-graded locally</text>
+            <text x="500" y="1290" class="text-small" text-anchor="start">8. Progress saved to sync queue</text>
+            <text x="500" y="1305" class="text-small" text-anchor="start">9. Next day (WiFi) → Sync Service uploads all data</text>
+
+            <!-- Flow 3: Teacher Monitoring -->
+            <rect x="930" y="1140" width="420" height="180" class="box-secondary" rx="5"/>
+            <text x="1140" y="1160" class="title-text" style="text-decoration: underline;">FLOW 3: Teacher Monitoring</text>
+            
+            <text x="940" y="1185" class="text-small" text-anchor="start">1. Teacher logs into Web Portal</text>
+            <text x="940" y="1200" class="text-small" text-anchor="start">2. Auth via User Service (JWT token)</text>
+            <text x="940" y="1215" class="text-small" text-anchor="start">3. Dashboard calls Analytics Service</text>
+            <text x="940" y="1230" class="text-small" text-anchor="start">4. Queries PostgreSQL for student progress</text>
+            <text x="940" y="1245" class="text-small" text-anchor="start">5. Elasticsearch for weak areas analysis</text>
+            <text x="940" y="1260" class="text-small" text-anchor="start">6. Real-time metrics from Redis cache</text>
+            <text x="940" y="1275" class="text-small" text-anchor="start">7. Displays: 15 students need attention</text>
+            <text x="940" y="1290" class="text-small" text-anchor="start">8. Teacher creates custom assignment</text>
+            <text x="940" y="1305" class="text-small" text-anchor="start">9. Assignment pushed to student devices</text>
+
+            <!-- KEY FEATURES BOX -->
+            <rect x="50" y="1360" width="1300" height="150" class="box" rx="5" style="fill: #F0F8FF;"/>
+            <text x="700" y="1385" class="title-text" style="font-size: 13px; text-decoration: underline;">ARCHITECTURE HIGHLIGHTS</text>
+            
+            <text x="60" y="1410" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Offline-First Design:</tspan> Full functionality without internet using local AI models (TensorFlow Lite 500MB) and SQLite cache</text>
+            <text x="60" y="1428" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Multilingual Support:</tspan> 15+ Indian languages (Hindi, Tamil, Telugu, Marathi, etc.) with 90%+ accuracy using IndicBERT</text>
+            <text x="60" y="1446" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Low Latency:</tspan> &lt;2s response time via multi-level caching (Redis + CDN + Local) and regional deployment</text>
+            <text x="60" y="1464" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Scalable Architecture:</tspan> Microservices on Kubernetes auto-scale to handle millions of concurrent users</text>
+            <text x="60" y="1482" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Adaptive Learning:</tspan> AI-powered personalization using collaborative filtering, knowledge tracing (LSTM), and reinforcement learning</text>
+            <text x="60" y="1500" class="text-small" text-anchor="start">✓ <tspan font-weight="bold">Cost Optimized:</tspan> Hybrid edge-cloud strategy, data compression, and efficient sync reduce bandwidth by 70% (target: &lt;10MB/day)</text>
+
+            <!-- Technology Stack Summary -->
+            <rect x="50" y="1540" width="640" height="150" class="box-secondary" rx="5"/>
+            <text x="370" y="1565" class="title-text" style="font-size: 12px;">PRIMARY TECHNOLOGIES</text>
+            <text x="60" y="1590" class="text-small" text-anchor="start"><tspan font-weight="bold">Frontend:</tspan> React Native (Mobile), React.js (Web), Redux, SQLite</text>
+            <text x="60" y="1608" class="text-small" text-anchor="start"><tspan font-weight="bold">Backend:</tspan> Node.js + Express, Python FastAPI, Kong API Gateway</text>
+            <text x="60" y="1626" class="text-small" text-anchor="start"><tspan font-weight="bold">AI/ML:</tspan> IndicBERT, Whisper, TensorFlow Lite, PyTorch, Hugging Face</text>
+            <text x="60" y="1644" class="text-small" text-anchor="start"><tspan font-weight="bold">Databases:</tspan> PostgreSQL, MongoDB, Redis, Elasticsearch, AWS S3</text>
+            <text x="60" y="1662" class="text-small" text-anchor="start"><tspan font-weight="bold">Infrastructure:</tspan> Kubernetes, Docker, AWS/GCP, CloudFront, Prometheus</text>
+            <text x="60" y="1680" class="text-small" text-anchor="start"><tspan font-weight="bold">DevOps:</tspan> GitHub Actions, Grafana, Sentry, Helm</text>
+
+            <!-- Target Specifications -->
+            <rect x="710" y="1540" width="640" height="150" class="box-secondary" rx="5"/>
+            <text x="1030" y="1565" class="title-text" style="font-size: 12px;">TARGET SPECIFICATIONS</text>
+            <text x="720" y="1590" class="text-small" text-anchor="start"><tspan font-weight="bold">Device Support:</tspan> Android 8+ | 2GB RAM | ₹5,000 smartphones</text>
+            <text x="720" y="1608" class="text-small" text-anchor="start"><tspan font-weight="bold">Network:</tspan> Works on 2G/3G/4G | Offline-capable | &lt;10MB data/day</text>
+            <text x="720" y="1626" class="text-small" text-anchor="start"><tspan font-weight="bold">Performance:</tspan> &lt;2s response | &lt;3s app launch | 99.5% uptime</text>
+            <text x="720" y="1644" class="text-small" text-anchor="start"><tspan font-weight="bold">Languages:</tspan> Hindi, Tamil, Telugu, Marathi, Bengali, Gujarati, Kannada, Malayalam, Punjabi, Odia, Assamese + English</text>
+            <text x="720" y="1662" class="text-small" text-anchor="start"><tspan font-weight="bold">Scale:</tspan> Target 5K-10K users (Year 1) → 100K (Year 2) → 1M+ (Year 3)</text>
+            <text x="720" y="1680" class="text-small" text-anchor="start"><tspan font-weight="bold">Security:</tspan> End-to-end encryption | JWT auth | GDPR compliant</text>
+
+            <!-- Footer -->
+            <text x="700" y="1750" class="text" style="font-size: 11px; font-weight: bold;">
+                Vidya AI - Multilingual AI Education Platform for 250M+ Rural Students
+            </text>
+            <text x="700" y="1770" class="text-small" style="font-size: 10px;">
+                AI for Bharat 2026 | Student Track: AI for Communities, Access & Public Impact
+            </text>
+        </svg>
+    </div>
+
+    <script>
+        // Print functionality
+        window.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
