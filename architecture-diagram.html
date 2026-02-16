@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya AI - System Architecture Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .layer {
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .layer-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .layer-icon {
+            font-size: 1.3em;
+        }
+
+        .components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .component {
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .component:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .component-title {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .component-desc {
+            color: #718096;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .component-tech {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tech-tag {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .connection-line {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .connection-line::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .connection-line::after {
+            content: '⬇';
+            font-size: 1.5em;
+            color: #667eea;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            z-index: 1;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Color coding for different layers */
+        .layer.frontend::before { background: linear-gradient(90deg, #4299e1 0%, #3182ce 100%); }
+        .layer.backend::before { background: linear-gradient(90deg, #48bb78 0%, #38a169 100%); }
+        .layer.ai::before { background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%); }
+        .layer.data::before { background: linear-gradient(90deg, #9f7aea 0%, #805ad5 100%); }
+        .layer.infra::before { background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%); }
+
+        .frontend .component:hover { border-color: #4299e1; }
+        .backend .component:hover { border-color: #48bb78; }
+        .ai .component:hover { border-color: #ed8936; }
+        .data .component:hover { border-color: #9f7aea; }
+        .infra .component:hover { border-color: #f56565; }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 5px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .data-flow {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .data-flow-title {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .data-flow-steps {
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #2d3748;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            display: none;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .component:hover .tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Vidya AI - System Architecture</h1>
+        <p class="subtitle">Multilingual AI Education Platform for 250M+ Rural Students</p>
+
+        <!-- Key Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Indian Languages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Offline Capable</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">&lt;2s</div>
+                <div class="stat-label">Response Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">₹5K</div>
+                <div class="stat-label">Device Support</div>
+            </div>
+        </div>
+
+        <div class="architecture">
+            <!-- Frontend Layer -->
+            <div class="layer frontend">
+                <div class="layer-title">
+                    <span class="layer-icon">📱</span>
+                    Frontend Layer - User Interface
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">🎯 Mobile App (Android)</div>
+                        <div class="component-desc">
+                            Primary interface for students. Voice-native, offline-first design optimized for low-end devices (2GB RAM, Android 8+).
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Redux</span>
+                            <span class="tech-tag">SQLite</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🌐 Web Portal (PWA)</div>
+                        <div class="component-desc">
+                            Teacher and parent dashboard for monitoring progress, creating assignments, and analytics.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">React.js</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">IndexedDB</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🎤 Voice Interface</div>
+                        <div class="component-desc">
+                            Speech-to-text input and text-to-speech output in 15+ Indian languages for natural interaction.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">React Native Voice</span>
+                            <span class="tech-tag">Audio API</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">💾 Local Storage</div>
+                        <div class="component-desc">
+                            Offline caching for lessons, assessments, and user progress. Syncs when online.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">AsyncStorage</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- Backend Layer -->
+            <div class="layer backend">
+                <div class="layer-title">
+                    <span class="layer-icon">⚙️</span>
+                    Backend Layer - Microservices
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">🔐 User Service</div>
+                        <div class="component-desc">
+                            Authentication (JWT), user management, role-based access control, session handling.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Express</span>
+                            <span class="tech-tag">JWT</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">📚 Content Service</div>
+                        <div class="component-desc">
+                            NCERT-aligned curriculum, multilingual content management, versioning, and delivery.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🎯 Assessment Service</div>
+                        <div class="component-desc">
+                            Adaptive testing, auto-grading, progress tracking, and performance analytics.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">Redis</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🔌 API Gateway</div>
+                        <div class="component-desc">
+                            Request routing, load balancing, rate limiting, authentication proxy, and API versioning.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Kong</span>
+                            <span class="tech-tag">AWS API Gateway</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🔄 Sync Service</div>
+                        <div class="component-desc">
+                            Handles offline-to-online synchronization, conflict resolution, and data consistency.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">RabbitMQ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- AI/ML Layer -->
+            <div class="layer ai">
+                <div class="layer-title">
+                    <span class="layer-icon">🧠</span>
+                    AI/ML Layer - Intelligence Engine
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">🌍 Multilingual NLP</div>
+                        <div class="component-desc">
+                            Language understanding across 15+ Indian languages using IndicBERT for intent classification and query understanding.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">IndicBERT</span>
+                            <span class="tech-tag">mBERT</span>
+                            <span class="tech-tag">Hugging Face</span>
+                        </div>
+                        <div class="data-flow">
+                            <div class="data-flow-title">Processing Pipeline:</div>
+                            <div class="data-flow-steps">
+                                Input → Language Detection → Tokenization → Embedding → Intent Classification → Response Generation
+                            </div>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🎤 Speech Processing</div>
+                        <div class="component-desc">
+                            ASR (Speech-to-Text) and TTS (Text-to-Speech) for natural voice interactions in native languages.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Whisper</span>
+                            <span class="tech-tag">IndicWav2Vec</span>
+                            <span class="tech-tag">Cloud TTS</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">💡 AI Tutor Engine</div>
+                        <div class="component-desc">
+                            Question answering, doubt resolution, adaptive explanation generation, and personalized tutoring.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">RAG</span>
+                            <span class="tech-tag">GPT-based</span>
+                            <span class="tech-tag">Fine-tuned</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">📊 Recommendation Engine</div>
+                        <div class="component-desc">
+                            Personalized learning paths using collaborative filtering and knowledge tracing algorithms.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Collaborative Filtering</span>
+                            <span class="tech-tag">LSTM</span>
+                            <span class="tech-tag">RL</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🎯 Adaptive Learning</div>
+                        <div class="component-desc">
+                            Difficulty adjustment, weak area identification, and personalized practice problem generation.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Reinforcement Learning</span>
+                            <span class="tech-tag">scikit-learn</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">📱 On-Device Models</div>
+                        <div class="component-desc">
+                            Lightweight quantized models (500MB) for offline AI capabilities on low-end devices.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">TensorFlow Lite</span>
+                            <span class="tech-tag">Quantization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- Data Layer -->
+            <div class="layer data">
+                <div class="layer-title">
+                    <span class="layer-icon">💾</span>
+                    Data Layer - Storage & Analytics
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">🗄️ PostgreSQL</div>
+                        <div class="component-desc">
+                            Primary relational database for users, authentication, progress tracking, and structured data.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">User Data</span>
+                            <span class="tech-tag">Progress</span>
+                            <span class="tech-tag">Scores</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">📄 MongoDB</div>
+                        <div class="component-desc">
+                            Document store for educational content, conversations, multilingual text, and unstructured data.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Content</span>
+                            <span class="tech-tag">Conversations</span>
+                            <span class="tech-tag">Logs</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">⚡ Redis</div>
+                        <div class="component-desc">
+                            In-memory caching for sessions, frequently accessed content, and real-time data.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Cache</span>
+                            <span class="tech-tag">Sessions</span>
+                            <span class="tech-tag">Real-time</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🔍 Elasticsearch</div>
+                        <div class="component-desc">
+                            Full-text search, content discovery, analytics, and multilingual search capabilities.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Search</span>
+                            <span class="tech-tag">Analytics</span>
+                            <span class="tech-tag">Logs</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">☁️ AWS S3 / Azure Blob</div>
+                        <div class="component-desc">
+                            Object storage for media files (images, audio, video), AI model weights, and backups.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Media</span>
+                            <span class="tech-tag">Models</span>
+                            <span class="tech-tag">Backups</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-line"></div>
+
+            <!-- Infrastructure Layer -->
+            <div class="layer infra">
+                <div class="layer-title">
+                    <span class="layer-icon">☁️</span>
+                    Infrastructure Layer - Deployment & Operations
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">🐳 Container Orchestration</div>
+                        <div class="component-desc">
+                            Kubernetes for container management, auto-scaling, and service discovery.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Kubernetes</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">Helm</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🌐 CDN & Edge</div>
+                        <div class="component-desc">
+                            Content delivery network for fast access across India with regional edge caching.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">CloudFront</span>
+                            <span class="tech-tag">Cloudflare</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">📊 Monitoring</div>
+                        <div class="component-desc">
+                            Real-time monitoring, alerting, metrics, and performance tracking.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">Prometheus</span>
+                            <span class="tech-tag">Grafana</span>
+                            <span class="tech-tag">Sentry</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🔄 CI/CD Pipeline</div>
+                        <div class="component-desc">
+                            Automated testing, building, and deployment with GitHub Actions.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">GitHub Actions</span>
+                            <span class="tech-tag">Jest</span>
+                            <span class="tech-tag">pytest</span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-title">🔐 Security & Compliance</div>
+                        <div class="component-desc">
+                            SSL/TLS encryption, data privacy, GDPR compliance, and security monitoring.
+                        </div>
+                        <div class="component-tech">
+                            <span class="tech-tag">SSL/TLS</span>
+                            <span class="tech-tag">OAuth 2.0</span>
+                            <span class="tech-tag">Encryption</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(90deg, #4299e1 0%, #3182ce 100%);"></div>
+                <span>Frontend Layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);"></div>
+                <span>Backend Layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%);"></div>
+                <span>AI/ML Layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(90deg, #9f7aea 0%, #805ad5 100%);"></div>
+                <span>Data Layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%);"></div>
+                <span>Infrastructure Layer</span>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div style="margin-top: 40px; padding: 25px; background: #f7fafc; border-radius: 15px; border-left: 5px solid #667eea;">
+            <h3 style="color: #2d3748; margin-bottom: 15px;">🎯 Key Architecture Highlights</h3>
+            <ul style="color: #4a5568; line-height: 2; padding-left: 20px;">
+                <li><strong>Offline-First:</strong> All core features work without internet using local AI models and cached content</li>
+                <li><strong>Scalable:</strong> Microservices architecture with Kubernetes auto-scaling for handling millions of users</li>
+                <li><strong>Low-Latency:</strong> Multi-level caching (Redis, CDN, local) ensures &lt;2s response time</li>
+                <li><strong>Multilingual:</strong> IndicBERT-powered NLP supports 15+ Indian languages with 90%+ accuracy</li>
+                <li><strong>Cost-Optimized:</strong> Hybrid cloud strategy, efficient data compression, and edge caching reduce bandwidth costs by 70%</li>
+                <li><strong>Privacy-First:</strong> End-to-end encryption, GDPR compliance, and parent-controlled data sharing</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #718096; font-size: 0.9em;">
+            <p>Vidya AI - Empowering 250M+ Rural Students Through Technology</p>
+            <p style="margin-top: 5px;">AI for Bharat 2026 | Student Track Submission</p>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive hover effects
+        document.querySelectorAll('.component').forEach(component => {
+            component.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) rotate(1deg)';
+            });
+            
+            component.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+
+        // Add click to copy functionality
+        document.querySelectorAll('.component-title').forEach(title => {
+            title.style.cursor = 'pointer';
+            title.addEventListener('click', function() {
+                const componentName = this.textContent;
+                navigator.clipboard.writeText(componentName).then(() => {
+                    // Show temporary notification
+                    const notification = document.createElement('div');
+                    notification.textContent = 'Copied!';
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #48bb78;
+                        color: white;
+                        padding: 15px 25px;
+                        border-radius: 10px;
+                        z-index: 10000;
+                        animation: fadeIn 0.3s ease;
+                    `;
+                    document.body.appendChild(notification);
+                    setTimeout(() => notification.remove(), 2000);
+                });
+            });
+        });
+
+        // Smooth scroll animation on layer hover
+        document.querySelectorAll('.layer').forEach(layer => {
+            layer.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+
+        // Print button functionality
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
